@@ -13,9 +13,10 @@ const Homepage = () => {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await fetch("http://localhost:5000/me", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
           credentials: "include",
         });
+        
         if (res.ok) {
           const data = await res.json();
           setIsLoggedIn(true);
@@ -50,7 +51,7 @@ const Homepage = () => {
     e.preventDefault();
     try {
       console.log("draft text in home: ",draftText);
-      const res = await fetch('http://localhost:5000/send', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/send`, {
         method: 'POST',
         credentials: 'include',
         headers: {

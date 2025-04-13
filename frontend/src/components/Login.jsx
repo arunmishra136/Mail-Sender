@@ -19,7 +19,7 @@ const Login = () => {
     
       const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/login',formData,{withCredentials:true})
+        axios.post(`${import.meta.env.VITE_API_URL}/login`,formData,{withCredentials:true})
         .then(result => {
           console.log(result)
           toast.success("🟢 Logged in successfully!");
@@ -65,7 +65,7 @@ const Login = () => {
       <div className="w-full flex justify-center">
      <button
     onClick={() => {
-      window.location.href = 'http://localhost:5000/google';
+      window.location.href = `${import.meta.env.VITE_API_URL}/google`;
     }}
     className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition"
   >

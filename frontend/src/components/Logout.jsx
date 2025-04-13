@@ -9,7 +9,7 @@ const Logout = () => {
   useEffect(() => {
     const logout = async () => {
       try {
-        await axios.post('http://localhost:5000/logout', {}, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/logout`, {}, {
           withCredentials: true, // send cookie
         });
         navigate('/login');

@@ -10,7 +10,13 @@ const AppPasswordForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/app-password', { appPassword: password }, { withCredentials: true });
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/app-password`,
+        { appPassword: password },
+        { withCredentials: true }
+      );
+      
+      
       toast.success('App Password saved!');
       navigate('/');
     } catch (err) {

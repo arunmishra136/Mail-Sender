@@ -17,7 +17,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/me', { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, { withCredentials: true });
         setUser(res.data);
         setUserId(res.data._id);
       } catch (err) {
@@ -34,7 +34,7 @@ const ProfilePage = () => {
   
   const handleGoHome = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/me', { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, { withCredentials: true });
       
       if (!res.data.hashedAppPassword) {
         navigate('/enter-app-password');
@@ -63,7 +63,7 @@ const ProfilePage = () => {
   const handleDeleteRole = async () => {
     if (!selectedRole || !userId) return;
     try {
-      await axios.delete('http://localhost:5000/drafts/delete', {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/drafts/delete`, {
         data: { userId, role: selectedRole },
       });
       const updatedDrafts = user.drafts.filter((d) => d.role !== selectedRole);
@@ -89,12 +89,12 @@ const ProfilePage = () => {
     // });
     
     try {
-      await axios[method](`http://localhost:5000/drafts/${endpoint}`, {
+      await axios[method](`${import.meta.env.VITE_API_URL}/drafts/${endpoint}`, {
         userId,
         role: selectedRole,
         draftText: draftContent,
       });
-      const res = await axios.get('http://localhost:5000/me', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, {
         withCredentials: true,
       });
       setUser(res.data);
@@ -107,7 +107,7 @@ const ProfilePage = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/logout');
+      await axios.post(`${import.meta.env.VITE_API_URL}/logout`);
       window.location.href = '/login';
     } catch (err) {
       console.error('Logout failed:', err);
