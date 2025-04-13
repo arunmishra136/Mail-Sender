@@ -1,10 +1,10 @@
-# 📧 Mail-Sender
+#  Mail-Sender
 
 Mail-Sender is a secure full-stack web application that allows users to log in with Google, create drafts for different job roles, and send them via Gmail with a single click. Each user can store role-specific drafts, and all emails are sent using their own 16-digit Gmail App Password—safely encrypted in the database.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - React.js (Vite)  
 - Node.js & Express.js  
@@ -19,7 +19,7 @@ Mail-Sender is a secure full-stack web application that allows users to log in w
 
 ---
 
-## 🚀 Features
+##  Features
 
 - Google Login (OAuth 2.0)  
 - Store and manage drafts per job role  
