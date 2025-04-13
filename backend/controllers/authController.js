@@ -6,33 +6,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 import crypto from 'crypto';
 
-// For regular signup
-export const signup = async (req, res) => {
-  const { name, email, password } = req.body;
-  try {
-    const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ msg: 'User already exists' });
-
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    const newUser = new User({ name, email, password: passwordHash });
-    await newUser.save();
-
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: false, // true in production with HTTPS
-      sameSite: 'Lax',
-      maxAge: 3600000,
-    });
-
-    res.status(201).json({ user: { name, email } });
-  } catch (err) {
-    res.status(500).json({ msg: 'Signup failed', err });
-  }
-};
 
 // For regular login
 export const login = async (req, res) => {
