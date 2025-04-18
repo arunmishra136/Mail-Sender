@@ -25,10 +25,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,          // true for HTTPS (Render uses HTTPS)
-  httpOnly: true,
-  sameSite: 'none',      // required for cross-origin cookies
-  maxAge: 1000 * 60 * 60 * 24,
+    secure: isProduction,               // true in production (HTTPS), false in dev (HTTP)
+    httpOnly: true,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 1000 * 60 * 60 * 24,
   },
 }));
 
