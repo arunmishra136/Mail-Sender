@@ -81,8 +81,8 @@ export const googleAuth = passport.authenticate('google', {
 });
 
 export const googleCallback = passport.authenticate('google', {
-  successRedirect: 'https://mail-sender-frontt.onrender.com/profile',
-  failureRedirect: 'https://mail-sender-frontt.onrender.com/login',
+  successRedirect: 'http://localhost:5173/profile',
+  failureRedirect: 'http://localhost:5173/login',
   session: true // Ensure session is maintained
 });
 
