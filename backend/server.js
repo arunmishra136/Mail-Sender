@@ -25,10 +25,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false,        // false for localhost (HTTP)
-    httpOnly: true,
-    sameSite: 'lax',      // 'lax' or 'strict' for localhost
-    maxAge: 1000 * 60 * 60 * 24,
+    secure: true,          // true for HTTPS (Render uses HTTPS)
+  httpOnly: true,
+  sameSite: 'none',      // required for cross-origin cookies
+  maxAge: 1000 * 60 * 60 * 24,
   },
 }));
 
