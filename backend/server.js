@@ -15,7 +15,7 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['https://mail-sender-4ki1.onrender.com'],
+  origin: ['https://mail-sender-frontt.onrender.com'],
   credentials: true,
 }));
 
