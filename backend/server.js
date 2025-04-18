@@ -25,9 +25,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: isProduction,               // true in production (HTTPS), false in dev (HTTP)
+    secure: true,               // Render uses HTTPS, so this should be true
     httpOnly: true,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: 'none',           // Required for cross-origin cookie (localhost ⇄ Render)
     maxAge: 1000 * 60 * 60 * 24,
   },
 }));
