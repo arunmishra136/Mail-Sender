@@ -18,10 +18,13 @@ const ProfilePage = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, { withCredentials: true });
+        console.log("res: ",res);
         setUser(res.data);
         setUserId(res.data._id);
       } catch (err) {
+        console.log("Error in profile");
         console.error(err);
+        
         navigate('/login'); // Redirect to login if unauthenticated
       } finally {
         setLoading(false);

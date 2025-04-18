@@ -15,7 +15,7 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  origin: ['https://mail-sender-4ki1.onrender.com'],
   credentials: true,
 }));
 
@@ -25,9 +25,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // set to true in production with https
+    secure: true, // set to true in production with https
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'none',
     maxAge: 1000 * 60 * 60 * 24,
   },
 }));
@@ -52,4 +52,5 @@ app.get('/api/current-user', (req, res) => {
   res.send(req.user);
 });
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
