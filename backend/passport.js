@@ -14,6 +14,8 @@ passport.use(
       scope: ['profile', 'email']
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log('✅ Google Callback Hit');
+      console.log('🌐 Profile:', profile);
       try {
         let user = await User.findOne({ googleId: profile.id });
         if (!user) {
@@ -24,8 +26,12 @@ passport.use(
           });
           await user.save();
         }
+        else {
+          console.log('👤 User exists:', user.email);
+        }
         return done(null, user);
       } catch (err) {
+        console.error('❌ Error in Google Strategy:', err);
         return done(err, null);
       }
     }
@@ -34,11 +40,13 @@ passport.use(
 
 // SERIALIZE USER (store user id in session)
 passport.serializeUser((user, done) => {
+  console.log('🔐 Serializing user:', user._id);
   done(null, user._id);
 });
 
 // DESERIALIZE USER (get full user by id from DB)
 passport.deserializeUser(async (id, done) => {
+  console.log('🔓 Deserializing user by ID:', id);
   try {
     const user = await User.findById(id);
     done(null, user);

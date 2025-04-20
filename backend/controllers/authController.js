@@ -80,11 +80,14 @@ export const googleAuth = passport.authenticate('google', {
   ],
 });
 
-export const googleCallback = passport.authenticate('google', {
-  successRedirect: 'https://mail-sender-fronttendhai.onrender.com/profile',
-  failureRedirect: 'https://mail-sender-fronttendhai.onrender.com/login',
-  session: true // Ensure session is maintained
-});
+export const googleCallback = (req, res, next) => {
+  console.log('🎯 Callback route hit');
+  passport.authenticate('google', {
+    successRedirect: 'https://mail-sender-fronttendhai.onrender.com/profile',
+    failureRedirect: 'https://mail-sender-fronttendhai.onrender.com/login',
+    session: true
+  })(req, res, next);
+};
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; // Must be 32 bytes
 const IV_LENGTH = 16; // For AES, this is always 16
