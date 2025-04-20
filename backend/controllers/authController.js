@@ -82,6 +82,8 @@ export const googleAuth = passport.authenticate('google', {
 
 export const googleCallback = (req, res, next) => {
   console.log('🎯 Callback route hit');
+  console.log('Trust proxy:', app.get('trust proxy'));
+  console.log('Cookies:', req.cookies);
   passport.authenticate('google', {
     successRedirect: 'https://mail-sender-fronttendhai.onrender.com/profile',
     failureRedirect: 'https://mail-sender-fronttendhai.onrender.com/login',
