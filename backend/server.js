@@ -25,12 +25,13 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,               // Render uses HTTPS, so this should be true
+    secure: process.env.NODE_ENV === 'production', // 🔥 Fix
     httpOnly: true,
-    sameSite: 'none',           // Required for cross-origin cookie (localhost ⇄ Render)
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 🔁 Fix
     maxAge: 1000 * 60 * 60 * 24,
   },
 }));
+
 
 app.use(express.json());
 app.use(passport.initialize());
