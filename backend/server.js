@@ -49,9 +49,14 @@ app.use('/drafts', draftRoutes);
 
 
 // Example route
-app.get('/api/current-user', (req, res) => {
-  res.send(req.user);
+app.get('/api/check-auth', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.json({ user: req.user });
+  } else {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
 });
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
