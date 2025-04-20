@@ -18,11 +18,11 @@ const ProfilePage = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, { withCredentials: true });
-        console.log("res: ",res);
+        //console.log("res: ",res);
         setUser(res.data);
         setUserId(res.data._id);
       } catch (err) {
-        console.log("Error in profile");
+        //console.log("Error in profile");
         console.error(err);
         
         navigate('/login'); // Redirect to login if unauthenticated
@@ -34,7 +34,7 @@ const ProfilePage = () => {
     fetchUser();
   }, []);
 
-  
+
 useEffect(() => {
   axios.get('https://mail-sender-backend-amkc.onrender.com/api/check-auth', {
     withCredentials: true, // This ensures cookies (like connect.sid) are sent

@@ -13,7 +13,7 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
 
-app.set('trust proxy', 1);
+app.set('trust proxy', 1);   //this is important for deployment to set cookie dude
 app.use(cookieParser());
 
 app.use(cors({
