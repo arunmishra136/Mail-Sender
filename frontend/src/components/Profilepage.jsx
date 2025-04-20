@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ name: '', email: '', drafts: [], picture: '' });
+  const [user, setUser] = useState({ name: '', email: '', drafts: [] });
   const [selectedRole, setSelectedRole] = useState('');
   const [draftContent, setDraftContent] = useState('');
   const [loading, setLoading] = useState(true);
@@ -13,31 +13,33 @@ const ProfilePage = () => {
 
   axios.defaults.withCredentials = true;
 
+  // ✅ Fetch logged-in user from session (server-side)
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, { withCredentials: true });
+        //console.log("res: ",res);
         setUser(res.data);
         setUserId(res.data._id);
       } catch (err) {
+        //console.log("Error in profile");
         console.error(err);
-        navigate('/login');
+        
+        navigate('/login'); // Redirect to login if unauthenticated
       } finally {
         setLoading(false);
       }
     };
+  
     fetchUser();
   }, []);
 
-
+  
+  
   const handleGoHome = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, {
-        withCredentials: true,
-      });
-
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/me`, { withCredentials: true });
+      
       if (!res.data.hashedAppPassword) {
         navigate('/enter-app-password');
       } else {
@@ -45,13 +47,14 @@ const ProfilePage = () => {
       }
     } catch (err) {
       console.error(err);
-      navigate('/login');
+      navigate('/login'); // fallback if user is not authenticated
     }
   };
-
+  
   const handleSetPassword = () => {
     navigate('/enter-app-password');
   };
+  
 
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
@@ -83,7 +86,12 @@ const ProfilePage = () => {
     const existing = user.drafts.find((d) => d.role === selectedRole);
     const endpoint = existing ? 'update' : 'create';
     const method = existing ? 'put' : 'post';
-
+    // console.log('Saving Draft:', {
+    //   userId,
+    //   role: selectedRole,
+    //   draftText: draftContent
+    // });
+    
     try {
       await axios[method](`${import.meta.env.VITE_API_URL}/drafts/${endpoint}`, {
         userId,
@@ -115,57 +123,43 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gray-400 p-6">
       <div className="max-w-3xl mx-auto bg-stone-300 shadow-lg rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-zinc-800 mb-6">Profile</h1>
+        <h1 className="text-3xl font-bold text-zinc-800 mb-2">Profile</h1>
 
         <div className="flex justify-between items-start mb-8">
-          <div className="flex items-center space-x-4">
-            {user.picture && (
-              <img
-                src={user.picture}
-                alt="Profile"
-                className="w-16 h-16 rounded-full shadow-md"
-              />
-            )}
-            <div>
-              <p className="text-lg font-semibold text-gray-700">Name: {user.name}</p>
-              <p className="text-lg font-semibold text-gray-700 mt-1">Email: {user.email}</p>
-            </div>
+          <div>
+            <p className="text-lg font-semibold text-gray-700">Name: {user.name}</p>
+            <p className="text-lg font-semibold text-gray-700 mt-2">Email: {user.email}</p>
           </div>
+          <button
+           onClick={handleGoHome}
+           className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+         >
+           Go Home
+         </button>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={handleGoHome}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
-            >
-              Go Home
-            </button>
-
-            <button
-              onClick={handleSetPassword}
-              className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition"
-            >
-              Set App Password
-            </button>
-          </div>
+         <button
+          onClick={handleSetPassword}
+          className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-200"
+        >
+          Set App Password
+        </button>
         </div>
 
         <h2 className="text-xl font-semibold text-zinc-800 mb-3">Select or Add Role</h2>
-
         <div className="flex flex-wrap gap-3 mb-4">
-          {Array.isArray(user.drafts) &&
-            user.drafts.map((d) => (
-              <button
-                key={d.role}
-                className={`px-4 py-2 rounded-full font-medium ${
-                  selectedRole === d.role
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-800 hover:bg-blue-100'
-                }`}
-                onClick={() => handleRoleSelect(d.role)}
-              >
-                {d.role}
-              </button>
-            ))}
+        {Array.isArray(user.drafts) && user.drafts.map((d) => (
+            <button
+              key={d.role}
+              className={`px-4 py-2 rounded-full font-medium ${
+                selectedRole === d.role
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-800 hover:bg-blue-100'
+              }`}
+              onClick={() => handleRoleSelect(d.role)}
+            >
+              {d.role}
+            </button>
+          ))}
         </div>
 
         <input
@@ -184,21 +178,19 @@ const ProfilePage = () => {
           className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <div className="flex flex-wrap gap-4 mt-4">
-          <button
-            onClick={handleSaveDraft}
-            className="bg-green-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-green-700 transition"
-          >
-            Save Draft
-          </button>
+        <button
+          onClick={handleSaveDraft}
+          className="mt-4 bg-green-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-green-700 transition"
+        >
+          Save Draft
+        </button>
 
-          <button
-            onClick={handleDeleteRole}
-            className="bg-red-500 text-white px-6 py-2 rounded-xl font-semibold hover:bg-red-600 transition"
-          >
-            Delete Role
-          </button>
-        </div>
+        <button
+          onClick={handleDeleteRole}
+          className="mt-4 ml-4 bg-red-500 text-white px-6 py-2 rounded-xl font-semibold hover:bg-red-600 transition"
+        >
+          Delete Role
+        </button>
 
         <button
           onClick={handleLogout}
