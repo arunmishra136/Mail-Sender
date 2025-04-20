@@ -33,6 +33,20 @@ const ProfilePage = () => {
   
     fetchUser();
   }, []);
+
+  
+useEffect(() => {
+  axios.get('https://mail-sender-backend-amkc.onrender.com/api/check-auth', {
+    withCredentials: true, // This ensures cookies (like connect.sid) are sent
+  })
+  .then((res) => {
+    console.log('✅ Check Auth:', res.data);
+  })
+  .catch((err) => {
+    console.error('❌ Not authenticated:', err.response?.data || err.message);
+  });
+}, []);
+
   
   
   const handleGoHome = async () => {
