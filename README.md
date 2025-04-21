@@ -10,8 +10,7 @@ Mail-Sender is a secure full-stack web application that allows users to log in w
 - Node.js & Express.js  
 - MongoDB & Mongoose  
 - Google OAuth 2.0 (Passport.js)  
-- Nodemailer (for sending emails)  
-- Context API for state management  
+- Nodemailer (for sending emails)   
 - AES-256-CBC encryption  
 - Tailwind CSS  
 - dotenv for environment variables  
