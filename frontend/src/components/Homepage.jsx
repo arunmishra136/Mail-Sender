@@ -69,11 +69,12 @@ const Homepage = () => {
       if (res.ok) {
         toast.success('Email sent successfully');
       } else {
-        alert(`Error: ${data.message}`);
+        toast.error("Check your 16 digit app password/ Recipient's Mail");
+        console.log(`Error: ${data.message}`);
       }
     } catch (err) {
       console.error(err);
-      toast.error('Check your 16 digit app password');
+      toast.error("Error");
     }
   };
 
